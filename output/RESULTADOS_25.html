@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<title>Registros</title>
+<link href="..\img\ICONO_BBVA.jfif" rel="shortcut icon"/>
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- DataTables CSS -->
+<link href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css" rel="stylesheet" type="text/css"/>
+<!-- DataTables JS -->
+<script charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js" type="text/javascript"></script>
+<style>
+        * {
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+            background-color: #ffffff;
+            background-image: url('..\\img\\bg_header.png');
+            background-size: cover;
+            background-position: center;
+            margin: 0; /* Para eliminar el margen por defecto del body */
+        }
+
+        .container {
+            max-width: 1800px; /* Ajusta el ancho máximo según tu preferencia */
+            width: 100%;
+            background-color: #f0f8ff; /* Azul claro */
+            padding: 20px;
+            border-radius: 10px;
+            overflow-x: auto; /* Agregado para permitir desplazamiento horizontal */
+            margin-top: 20px; /* Agrega espacio entre la imagen y la tabla */
+        }
+
+        img {
+		margin-top: 3em;
+            width: 200px;
+            margin-bottom: 20px; /* Ajusta el espacio entre la imagen y la tabla */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1em;
+            overflow-x: auto; /* Agregado para permitir desplazamiento horizontal */
+        }
+
+        th, td {
+            border: 1px solid #000000;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #004481;
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+<img alt="Descripción de la imagen" src="..\img\logo_bbva_blanco.svg"/>
+<div class="container">
+<div id="tablaContainer"><table border="1"><thead><tr><th>cliente_altas</th><th>cliente_bajas</th><th>Igual_cd_client</th><th>ID_MET_CNBV</th><th>Contrato_ALTAS</th><th>Contrato_BAJAS</th><th>anexo_ALTAS</th><th>NOMBRE_ALTAS</th><th>NOMBRE_BAJAS</th><th>Iguales_NOM_ACRE</th><th>ALTA_NVA</th><th>TP_BAJA</th><th>Igual_CUENTA</th></tr><tr><th><select class="filtro"></select></th><th><select class="filtro"></select></th><th><select class="filtro"></select></th><th><select class="filtro"></select></th><th><select class="filtro"></select></th><th><select class="filtro"></select></th><th><select class="filtro"></select></th><th><select class="filtro"></select></th><th><select class="filtro"></select></th><th><select class="filtro"></select></th><th><select class="filtro"></select></th><th><select class="filtro"></select></th><th><select class="filtro"></select></th></tr></thead><tr><td>C0684260</td><td>C0684260</td><td>SI</td><td>2040012202007_VEN180704PU9007</td><td>007485000612003451</td><td>007485000612003451</td><td>22</td><td>VERITAS ENERGIA</td><td>VERITAS ENERGIA</td><td>SI</td><td>913</td><td>901</td><td>NO</td></tr></table></div>
+</div>
+<script>
+        $(document).ready( function () {
+            var table = $('#tablaContainer table').DataTable({
+                "initComplete": function () {
+                    this.api().columns().every( function () {
+                        var column = this;
+                        var select = $('<select class="filtro"><option value=""></option></select>')
+                            .appendTo( $(column.header()).empty() )
+                            .on( 'change', function () {
+                                var val = $.fn.dataTable.util.escapeRegex(
+                                    $(this).val()
+                                );
+
+                                column
+                                    .search( val ? '^'+val+'$' : '', true, false )
+                                    .draw();
+                            } );
+
+                        column.data().unique().sort().each( function (d, j) {
+                            select.append( '<option value="'+d+'">'+d+'</option>' )
+                        } );
+                    } );
+                }
+            });
+        });
+    </script>
+</body>
+</html>
